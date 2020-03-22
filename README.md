@@ -1,4 +1,5 @@
 # TUBES-LTFII
-TUBES LTFII!!!
+## TUBES LTFII!!!
 
-Untuk Kelompok Leo, g boleh nyontek, anj
+Untuk Kelompok Leo
+G boleh nyontek ya :)
