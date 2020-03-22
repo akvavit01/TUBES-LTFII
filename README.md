@@ -1,6 +1,5 @@
 # TUBES-LTFII
 ## TUBES LTFII!!!
 
-Untuk Kelompok Leo
-\newline
+Untuk Kelompok Leo. 
 G boleh nyontek ya :)
