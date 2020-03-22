@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/home/leochen/.arduino15/packages/arduino/hardware/sam/1.6.12/cores/arduino/**",
+                "/home/leochen/Software/ArduinoIDE/arduino-1.8.12-linux64/arduino-1.8.12/hardware/arduino/avr/cores/arduino/**",
+                "/home/leochen/Software/ArduinoIDE/arduino-1.8.12-linux64/arduino-1.8.12/tools/**",
+                "/home/leochen/Software/ArduinoIDE/arduino-1.8.12-linux64/arduino-1.8.12/hardware/arduino/avr/**",
+                "/home/leochen/Arduino/libraries/AccelStepper/**"
+            ],
+            "forcedInclude": [
+                "/home/leochen/Software/ArduinoIDE/arduino-1.8.12-linux64/arduino-1.8.12/hardware/arduino/avr/cores/arduino/Arduino.h"
+            ],
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

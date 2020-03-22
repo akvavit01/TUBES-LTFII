@@ -1,3 +1,9 @@
+// Program for solenoid-based robotic arm
+// Made with Arduino UNO based board
+// and MeArm based frame
+//
+// FOR TUBES!!!
+//
 // Made by : 
 //  
 // Leonardi
@@ -5,13 +11,7 @@
 // github  : github.com/akvavit01
 //
 
-// Program for solenoid-based robotic arm
-// Made with Arduino UNO based board
-
 // Header inclusion
-// Arduino.h
-#include <Arduino.h>
-
 // For servos
 #include <Servo.h>
 
@@ -81,51 +81,152 @@ class Solenoid
         }
 };
 
+// Object declaration
+// Servo object declaration
+Servo leftServo;
+Servo rightServo;
+// Stepper motor object declaration
+AccelStepper panMotor(STEPPER_PIN_AMOUNT, STEPPER_PIN1, STEPPER_PIN2, STEPPER_PIN3, STEPPER_PIN4);
+// Solenoid object declaration
+Solenoid solenoid{RELAY_PIN};
+
+// Function prototype declaration
+// Function to set all actuator to default state
+void defaultState();
+
 void setup()
 {
-    // Servo initialization
-    // Object assignment
-    Servo leftServo;
-    Servo rightServo;
-
     // Pin assignment
     leftServo.attach(SERVO_L, SERVO_L_MIN_PWM, SERVO_L_MAX_PWM);
     rightServo.attach(SERVO_R, SERVO_R_MIN_PWM, SERVO_R_MAX_PWM);
 
-    // Initial position
+    // Set stepper motor acceleration and speed
+    panMotor.setMaxSpeed(STEPPER_MAX_SPEED);
+    panMotor.setAcceleration(STEPPER_ACCEL);
+
+    // Serial communication initialization
+    BT.begin(BT_BAUDRATE);
+
+    
+
+    // Wait for bluetooth connection
+    while (!BT)
+    {
+        ;
+    }
+
+    BT.println("*     !!! Bluetooth connected !!!     *");
+
+    // Instructions
+    BT.println("***************************************");
+    BT.println("*          Solenoid Robot Arm         *");
+    BT.println("*           - How to use  -           *");
+    BT.println("***************************************");
+    BT.println("*                                     *");
+    BT.println("* - Controls -                        *");
+    BT.println("*    'W'     -- Move forward          *");
+    BT.println("*    'S'     -- Move backward         *");
+    BT.println("*    'A'     -- Turn left             *");
+    BT.println("*    'D'     -- Turn right            *");
+    BT.println("*    'J'     -- Solenoid ON           *");
+    BT.println("*    'K'     -- Solenoid OFF          *");
+    BT.println("*                                     *");
+    BT.println("* - Others -                          *");
+    BT.println("*    'M'     -- Default Position      *");
+    BT.println("*                                     *");
+    BT.println("* or use any kind of joystick         *");
+    BT.println("* or peripherals                      *");
+    BT.println("*                                     *");
+    BT.println("***************************************");
+}
+
+void defaultState()
+{
+    // Setting all actuators to default state
+    // Servo initial position
     while ( (leftServo.read() != SERVO_L_MIN_ANG) && (rightServo.read() != SERVO_R_MIN_ANG) )
     {
         // Setting both servo to minimal angle
         leftServo.write(SERVO_L_MIN_ANG);
         rightServo.write(SERVO_R_MIN_ANG);
-    }
+    }    
 
-    // Stepper motor initialization
-    // Object assignment
-    AccelStepper yawMotor(STEPPER_PIN_AMOUNT, STEPPER_PIN1, STEPPER_PIN2, STEPPER_PIN3, STEPPER_PIN4);
-
-    // Set stepper motor acceleration and speed
-    yawMotor.setMaxSpeed(STEPPER_MAX_SPEED);
-    yawMotor.setAcceleration(STEPPER_ACCEL);
-
-    // Initial position
-    while (yawMotor.currentPosition() != STEPPER_DEFAULT_POS)
+    // Stepper motor initial position
+    while (panMotor.currentPosition() != STEPPER_DEFAULT_POS)
     {
-        yawMotor.moveTo(STEPPER_DEFAULT_POS);
-        yawMotor.setSpeed(STEPPER_DEFAULT_SPEED);
-        yawMotor.run();
+        panMotor.moveTo(STEPPER_DEFAULT_POS);
+        panMotor.setSpeed(STEPPER_DEFAULT_SPEED);
+        panMotor.run();
     }
-
-    // Solenoid initialization
-    Solenoid solenoid{RELAY_PIN};
-    solenoid.off(); // Turning off solenoid
-
-    // Serial communication initialization
-    BT.begin(BT_BAUDRATE);
+    
+    // Turning off solenoid
+    solenoid.off();
 }
 
 void loop()
 {
-    BT.println("WOLOLO");
-    delay(1000);
+    unsigned int command; // variable to store commands
+  
+    // If connection severed,
+    // setting every actuator to default state
+    if (!BT.available() )
+    {
+        defaultState();
+    }
+    // Reading and executing command
+    else
+    {
+        command = BT.read();
+        //BT.print("Command : "); // For debugging input command
+        //BT.println(command);
+
+        // Move forward command
+        if (command == 'w')
+        {
+            BT.println("Moving forward");
+
+        }
+
+        // Move backward command
+        else if (command == 's')
+        {
+            BT.println("Moving backward");
+            
+        }
+
+        // Tilt left command
+        else if (command == 'a')
+        {
+            BT.println("Tilting left");
+            
+        }
+
+        // Tilt right command
+        else if (command == 'd')
+        {
+            BT.println("Tilting right");
+            
+        }
+
+        // Solenoid on command
+        else if (command == 'j')
+        {
+            BT.println("Solenoid ON");
+            solenoid.on();
+        }
+
+        // Solenoid off command
+        else if (command == 'k')
+        {
+            BT.println("Solenoid OFF");
+            solenoid.off();
+        }
+
+        // Default command
+        else if (command == 'm')
+        {
+            BT.println("Setting to default");
+            defaultState();
+        }
+    }
 }

@@ -1,0 +1,9 @@
+{
+    "sketch": "main.ino",
+    "board": "arduino:avr:uno",
+    "arduino.enableUSBDetection": true,
+    "arduino.disableTestingOpen": false,
+    "arduino.skipHeaderProvider": false,
+    "port": "/dev/ttyUSB0",
+    "programmer": "AVRISP mkII"
+}
