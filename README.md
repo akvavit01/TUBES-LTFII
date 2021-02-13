@@ -1,5 +1,4 @@
 # TUBES-LTFII
 ## TUBES LTFII!!!
 
-Untuk Kelompok Leo. 
-G boleh nyontek ya :)
+Source code for magnet-based robot arm. Load this code into Arduino UNO, and wire accordingly.
